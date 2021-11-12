@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group
+        android:id="@+id/group1"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/navigationItem_home"
+            android:title="@string/title_1"
+            android:icon="@drawable/ic_home_icon"
+            android:checked="true" />
+        <item
+            android:id="@+id/navigationItem_quizTime"
+            android:icon="@drawable/ic_noun_quiz"
+            android:title="@string/title_2" />
+        <item
+            android:id="@+id/navigationItem_profile"
+            android:icon="@drawable/ic_profile_icon"
+            android:title="@string/title_3" />
+        <item
+            android:id="@+id/navigationItem_listOfQuestions"
+            android:icon="@drawable/ic_noun_list"
+            android:title="@string/title_4" />
+        <item
+            android:id="@+id/navigationItem_newQuestion"
+            android:icon="@drawable/ic_noun_add"
+            android:title="@string/title_5" />
+    </group>
+</menu>

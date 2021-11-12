@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">QuizApp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="quiz">QUIZ</string>
+    <string name="your_name">Your Name</string>
+    <string name="choose_contact">CHOOSE CONTACT</string>
+    <string name="get_started">GET STARTED</string>
+
+    <string name="quiz_result">Quiz result</string>
+    <string name="try_again">TRY AGAIN</string>
+
+    <string name="next">Next</string>
+
+    <!--navigation drawer-->
+    <string name="title_1">Home</string>
+    <string name="title_2">Quiz time</string>
+    <string name="title_3">Profile</string>
+    <string name="title_4">List of questions</string>
+    <string name="title_5">New question</string>
+
+    <string name="header_title">Menu options</string>
+    <string name="header_text">Enjoy the quiz</string>
+    <string name="top_app_bar">Quiz App</string>
+    <string name="tesSkills">TEST YOUR SKILLS</string>
+    <string name="readQuestions">READ QUESTIONS</string>
+    <string name="createQuestion">CREATE QUESTION</string>
+    <string name="enjoyTheApp">Enjoy the quiz app, where you can:</string>
+    <string name="details">DETAILS</string>
+    <string name="delete">DELETE</string>
+    <string name="answers">Answers</string>
+    <string name="add_question">Add question</string>
+    <string name="correct_answer">Correct answer</string>
+    <string name="answer">Answer</string>
+</resources>
