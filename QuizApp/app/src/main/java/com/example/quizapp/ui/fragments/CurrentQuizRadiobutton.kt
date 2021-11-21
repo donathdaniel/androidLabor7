@@ -62,7 +62,7 @@ class CurrentQuizRadiobutton : Fragment() {
 
         val radioGroup = binding.radioGroup
         for (i in 0 until radioGroup.childCount) {
-            (radioGroup.getChildAt(i) as RadioButton).text = question.answers[i].first
+            (radioGroup.getChildAt(i) as RadioButton).text = question.answers?.get(i)?.first
         }
 
 

@@ -31,7 +31,7 @@ class QuestionDetail(val model : Question) : Fragment() {
         val answersList = mutableListOf<TextView>(binding.answer1,binding.answer2,binding.answer3,binding.answer4)
 
         var numberOfCorrectAnswers = 0
-        for(q in model.answers.withIndex()){
+        for(q in model.answers!!.withIndex()){
             if(q.value.second) {
                 numberOfCorrectAnswers++
                 answersList[q.index].setTextColor(Color.parseColor("#008080"))

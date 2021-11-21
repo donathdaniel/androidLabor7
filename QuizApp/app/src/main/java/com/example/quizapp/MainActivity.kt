@@ -4,10 +4,14 @@ import android.content.ClipData
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.activity.viewModels
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentContainerView
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.commit
+import com.example.quizapp.model.QuestionCategory
+import com.example.quizapp.shared.MyViewModel
 import com.example.quizapp.ui.fragments.*
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.internal.NavigationMenu
@@ -15,6 +19,7 @@ import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    val sharedView : MyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +32,15 @@ class MainActivity : AppCompatActivity() {
         findViewById<MaterialToolbar>(R.id.topAppBar).setNavigationOnClickListener {
             drawerLayout.open()
         }
+
+        sharedView.myQuizQuestions.observe(this, androidx.lifecycle.Observer { response ->
+            sharedView.mapToQuestions()
+        })
+
+        sharedView.getCategories()
+        sharedView.mQuizCategories.observe(this, androidx.lifecycle.Observer { response ->
+            sharedView.categories = response.body()?.triviaCategories as MutableList<QuestionCategory>
+        })
 
         val navigationView = findViewById<NavigationView>(R.id.navigationView)
 

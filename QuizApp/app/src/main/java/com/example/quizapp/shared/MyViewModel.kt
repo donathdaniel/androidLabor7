@@ -1,10 +1,19 @@
 package com.example.quizapp.shared
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import java.io.File
+import androidx.lifecycle.viewModelScope
+import com.example.quizapp.model.BaseModel
+import com.example.quizapp.model.Categories
+import com.example.quizapp.model.QuestionCategory
+import com.example.quizapp.repository.Repository
+import kotlinx.coroutines.launch
+import retrofit2.Response
 
 
-data class Question(var answers : MutableList<Pair<String,Boolean>>, val text : String)
+data class Question(var answers : MutableList<Pair<String,Boolean>>?, val text : String?)
 
 val hardCodedQuestions: MutableList<Question> = mutableListOf(
     Question(mutableListOf(Pair("14",false),Pair("11",false),Pair("8",false),Pair("5",true)), "One rabbit saw 6 elephants while going towards River. Every elephant saw 2 monkeys are going towards river. Every monkey holds one tortoice in their hands. How many animals are going towards the river?")
@@ -45,11 +54,62 @@ class MyViewModel : ViewModel() {
 
     var playerName : String = ""
     var latestScore = 0F
+    private val repository: Repository
 
-    var questions: MutableList<Question> = hardCodedQuestions2
+    val questions: MutableList<Question> = mutableListOf()
+    var categories: MutableList<QuestionCategory> = mutableListOf()
     var questionCounter : Int = 0
     var points : Float = 0F
     var finalPoints : Int = 0
+
+    var myQuizQuestions : MutableLiveData<Response<BaseModel>> = MutableLiveData()
+    var mQuizCategories : MutableLiveData<Response<Categories>> = MutableLiveData()
+
+    init {
+        repository = Repository()
+        getQuestionsForQuiz(20,"multiple",0)
+    }
+
+    fun getQuestionsForQuiz(amount: Int, type: String, category: Int){
+
+        viewModelScope.launch() {
+            val response = repository.getQuestionsForQuiz(amount,type,category)
+            myQuizQuestions.value = response
+
+            Log.d("Response", response.body()?.results.toString())
+
+        }
+    }
+
+    fun getCategories(){
+
+        viewModelScope.launch() {
+            val response = repository.getCategories()
+            mQuizCategories.value = response
+
+            Log.d("Response", response.body()?.triviaCategories.toString())
+
+        }
+    }
+
+
+    fun mapToQuestions(){
+        questions.clear()
+
+        myQuizQuestions.value?.body()?.results?.forEach { it ->
+            val text = it.question
+            val answers = mutableListOf<Pair<String,Boolean>>()
+            answers.add(Pair(it.correctAnswer,true))
+            it.incorrectAnswers.forEach { it ->
+                answers.add(Pair(it,false))
+            }
+
+            val question = Question(answers,text)
+
+            questions.add(question)
+
+        }
+    }
 
 
     fun startQuiz() {
@@ -62,7 +122,7 @@ class MyViewModel : ViewModel() {
 
     fun typeOfNewxtQuestion() : Int{
         var counter = 0
-        for(q in questions[questionCounter].answers){
+        for(q in questions[questionCounter].answers!!){
             if(q.second == true){
                 counter++
             }
@@ -93,12 +153,12 @@ class MyViewModel : ViewModel() {
 
         var correctAnswers = 0F
         for(number in numbers)
-            if(question.answers[number].second == true){
+            if(question.answers?.get(number)?.second == true){
                 correctAnswers++
             }
 
         var questionCorrectAnswer = 0
-        for(q in question.answers){
+        for(q in question.answers!!){
             if(q.second == true)
                 questionCorrectAnswer++
         }

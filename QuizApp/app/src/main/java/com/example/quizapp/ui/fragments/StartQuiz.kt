@@ -13,22 +13,15 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
-import com.example.quizapp.QuestionViewModelFactory
 import com.example.quizapp.R
 import com.example.quizapp.databinding.FragmentStartQuizBinding
-import com.example.quizapp.repository.Repository
 import com.example.quizapp.shared.MyViewModel
-import com.example.quizapp.viewModel.QuestionViewModel
-
 class StartQuiz : Fragment() {
 
     val sharedView : MyViewModel by activityViewModels()
     val REQUEST_SELECT_CONTACT = 1
     lateinit var contactUri: Uri
     lateinit var binding: FragmentStartQuizBinding
-    lateinit var viewModel : QuestionViewModel
 
 
     override fun onCreateView(
@@ -47,30 +40,12 @@ class StartQuiz : Fragment() {
             startActivityForResult(intent, REQUEST_SELECT_CONTACT)
         }
 
-        val repository = Repository()
-        val viewModelFactory = QuestionViewModelFactory(repository)
-        viewModel = ViewModelProvider(this,viewModelFactory).get(QuestionViewModel::class.java)
-
-
         binding.getStartedButton.setOnClickListener {
             if(binding.editTextTextPersonName.text.isEmpty()) {
                 Toast.makeText(this.context, "You did not give a name!", Toast.LENGTH_SHORT).show()
             }
             else{
                 sharedView.playerName = binding.editTextTextPersonName.text.toString()
-
-                //////////////
-                viewModel.getQuestionsForQuiz(10)
-                viewModel.myQuizQuestions.observe(viewLifecycleOwner, Observer { response ->
-                    if(response.isSuccessful){
-                        println("nice")
-                    }
-                    else{
-                        println("not nice")
-                    }
-                })
-
-                //////////////
 
                 sharedView.startQuiz()
                 val fragmentTransaction = parentFragmentManager.beginTransaction()
@@ -84,6 +59,7 @@ class StartQuiz : Fragment() {
                 fragmentTransaction.commit()
             }
         }
+
 
     }
 

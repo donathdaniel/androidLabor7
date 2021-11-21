@@ -13,7 +13,25 @@ data class Results(
     val type : String,
     val difficulty : String,
     val question : String,
-    val correct_answer : String,
-    val incorrect_answers : List<String>
+
+    @SerializedName("correct_answer")
+    val correctAnswer : String,
+
+    @SerializedName("incorrect_answers")
+    val incorrectAnswers : List<String>
 
 )
+
+data class Categories(
+    @SerializedName("trivia_categories")
+    val triviaCategories : List<QuestionCategory>
+)
+
+data class QuestionCategory(
+    val id : Int,
+    val name : String
+){
+    override fun toString(): String {
+        return name
+    }
+}

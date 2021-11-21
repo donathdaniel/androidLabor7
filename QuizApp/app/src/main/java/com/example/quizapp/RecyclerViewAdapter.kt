@@ -1,16 +1,17 @@
 package com.example.quizapp
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.fragment.app.commit
 import androidx.recyclerview.widget.RecyclerView
 import com.example.quizapp.shared.Question
+import com.example.quizapp.ui.fragments.QuestionList
 import com.example.quizapp.ui.fragments.StartQuiz
 
-class RecyclerViewAdapter(private val questionList : MutableList<Question>, private val mOnProductClickListener: OnQuestionClickListener) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewViewHolder>() {
+class RecyclerViewAdapter(private val mOnProductClickListener: QuestionList) : RecyclerView.Adapter<RecyclerViewAdapter.RecyclerViewViewHolder>() {
 
     inner class RecyclerViewViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -22,6 +23,14 @@ class RecyclerViewAdapter(private val questionList : MutableList<Question>, priv
         val detailsButton : Button = itemView.findViewById(R.id.detailsButton)
         val deleteButton : Button = itemView.findViewById(R.id.deleteButton)
 
+    }
+    private var questionList : MutableList<Question> = mutableListOf()
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(questionList: MutableList<Question>) {
+        this.questionList.clear()
+        this.questionList.addAll(questionList)
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerViewViewHolder {
@@ -41,6 +50,7 @@ class RecyclerViewAdapter(private val questionList : MutableList<Question>, priv
             val model = questionList[position]
             mOnProductClickListener.onDelete(model)
         }
+
         return holder
     }
 
@@ -52,7 +62,7 @@ class RecyclerViewAdapter(private val questionList : MutableList<Question>, priv
 
         var numberOfCorrectAnswers = 0
         var textOfTheCorrectAnswer = ""
-        for(q in currentItem.answers){
+        for(q in currentItem.answers!!){
             if(q.second) {
                 numberOfCorrectAnswers++
                 textOfTheCorrectAnswer = q.first

@@ -20,32 +20,35 @@
 
     <Button
         android:id="@+id/tesSkills"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/tesSkills"
         android:layout_margin="10dp"
         app:layout_constraintBottom_toTopOf="@+id/readQuestions"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/green"/>
 
     <Button
         android:id="@+id/readQuestions"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/readQuestions"
         android:layout_margin="10dp"
         app:layout_constraintBottom_toTopOf="@+id/createQuestion"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/green"/>
 
     <Button
         android:id="@+id/createQuestion"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:text="@string/createQuestion"
         android:layout_marginBottom="180dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        android:backgroundTint="@color/green"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

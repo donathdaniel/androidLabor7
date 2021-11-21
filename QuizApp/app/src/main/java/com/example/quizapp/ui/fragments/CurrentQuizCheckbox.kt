@@ -20,9 +20,9 @@ import com.example.quizapp.shared.Question
 
 class CurrentQuizCheckbox : Fragment() {
 
-    val sharedView : MyViewModel by activityViewModels()
-    lateinit var binding : FragmentCurrentQuizCheckboxBinding
-    lateinit var listOfCheckbox : List<CheckBox>
+    val sharedView: MyViewModel by activityViewModels()
+    lateinit var binding: FragmentCurrentQuizCheckboxBinding
+    lateinit var listOfCheckbox: List<CheckBox>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,24 +36,27 @@ class CurrentQuizCheckbox : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         //back button
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val dialogClickListener =
-                    DialogInterface.OnClickListener { dialog, which ->
-                        if (which == DialogInterface.BUTTON_POSITIVE) {
-                            val fragmentTransaction = parentFragmentManager.beginTransaction()
-                            fragmentTransaction.replace(R.id.fragment_container,StartQuiz())
-                            fragmentTransaction.addToBackStack(null)
-                            fragmentTransaction.commit()
+        activity?.onBackPressedDispatcher?.addCallback(
+            viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val dialogClickListener =
+                        DialogInterface.OnClickListener { dialog, which ->
+                            if (which == DialogInterface.BUTTON_POSITIVE) {
+                                val fragmentTransaction = parentFragmentManager.beginTransaction()
+                                fragmentTransaction.replace(R.id.fragment_container, StartQuiz())
+                                fragmentTransaction.addToBackStack(null)
+                                fragmentTransaction.commit()
+                            }
                         }
-                    }
 
-                val builder = AlertDialog.Builder(context)
-                builder.setMessage("Are you sure you want to quit?").setPositiveButton("Yes", dialogClickListener)
-                    .setNegativeButton("No", dialogClickListener).show()
+                    val builder = AlertDialog.Builder(context)
+                    builder.setMessage("Are you sure you want to quit?")
+                        .setPositiveButton("Yes", dialogClickListener)
+                        .setNegativeButton("No", dialogClickListener).show()
 
-            }
-        })
+                }
+            })
 
         val question = sharedView.getQuestion()
 
@@ -63,32 +66,33 @@ class CurrentQuizCheckbox : Fragment() {
         val answer2 = binding.answer2
         val answer3 = binding.answer3
         val answer4 = binding.answer4
-        listOfCheckbox = listOf(answer1,answer2,answer3,answer4)
+        listOfCheckbox = listOf(answer1, answer2, answer3, answer4)
         listOfCheckbox.forEachIndexed { index, item ->
-            item.text = question.answers[index].first
+            item.text = question.answers?.get(index)?.first
         }
 
 
         binding.nextButton.setOnClickListener {
-            if(oneAnswerChecked()){
-                val number : MutableList<Int> = mutableListOf()
+            if (oneAnswerChecked()) {
+                val number: MutableList<Int> = mutableListOf()
                 listOfCheckbox.forEachIndexed { index, item ->
-                    if(item.isChecked)
+                    if (item.isChecked)
                         number.add(index)
                 }
                 sharedView.calculateResult(question, number)
 
                 val fragmentTransaction = parentFragmentManager.beginTransaction()
-                if(sharedView.endOfQuiz()) {
+                if (sharedView.endOfQuiz()) {
 
-                    fragmentTransaction.replace(R.id.fragment_container,StartQuiz())
-                }
-                else {
-                    if(sharedView.typeOfNewxtQuestion() == 1) {
-                        fragmentTransaction.replace(R.id.fragment_container,CurrentQuizRadiobutton())
-                    }
-                    else{
-                        fragmentTransaction.replace(R.id.fragment_container,CurrentQuizCheckbox())
+                    fragmentTransaction.replace(R.id.fragment_container, StartQuiz())
+                } else {
+                    if (sharedView.typeOfNewxtQuestion() == 1) {
+                        fragmentTransaction.replace(
+                            R.id.fragment_container,
+                            CurrentQuizRadiobutton()
+                        )
+                    } else {
+                        fragmentTransaction.replace(R.id.fragment_container, CurrentQuizCheckbox())
                     }
                 }
                 fragmentTransaction.addToBackStack(null)
@@ -98,9 +102,9 @@ class CurrentQuizCheckbox : Fragment() {
     }
 
 
-    private fun oneAnswerChecked() : Boolean{
+    private fun oneAnswerChecked(): Boolean {
         listOfCheckbox.forEach { item ->
-            if(item.isChecked)
+            if (item.isChecked)
                 return true
         }
         return false
